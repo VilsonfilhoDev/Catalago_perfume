@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Exclusivo - L'Amour Perfumes</title>
+    
+    <!-- Biblioteca de ícones (FontAwesome) para deixar os botões lindos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Biblioteca para o efeito de confete (Confetti) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. CONFIGURAÇÕES GERAIS & RESET
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fcf9f5;
+            color: #333333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            min-height: 100vh;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ==========================================================================
+           2. TELA 1: O DISFARCE DO PERFUME
+           ========================================================================== */
+        .screen-perfume {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .shop-header {
+            text-align: center;
+            padding: 30px 20px 15px 20px;
+            border-bottom: 1px solid #f0e6df;
+        }
+
+        .shop-header h1 {
+            font-family: 'Georgia', serif;
+            font-size: 24px;
+            color: #8c6239;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .shop-header p {
+            font-size: 11px;
+            color: #999999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-showcase {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .product-image-wrapper {
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(140, 98, 57, 0.1);
+            background-color: #fdfbf9;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-title {
+            font-family: 'Georgia', serif;
+            font-size: 22px;
+            color: #4a3b32;
+            margin-bottom: 8px;
+        }
+
+        .product-meta {
+            font-size: 13px;
+            color: #888888;
+            margin-bottom: 15px;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #8c6239;
+            margin-bottom: 30px;
+        }
+
+        .btn-catalog {
+            background-color: #8c6239;
+            color: #ffffff;
+            border: none;
+            padding: 16px 40px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(140, 98, 57, 0.3);
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .btn-catalog:hover { background-color: #734f2e; }
+        .btn-catalog:active { transform: scale(0.98); }
+
+        .shop-footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #b5a499;
+            border-top: 1px solid #f0e6df;
+            background-color: #faf6f2;
+        }
+
+        /* ==========================================================================
+           3. TELA 2: CARTA COM ELEMENTOS ALEGRES (ESTILO CANVA)
+           ========================================================================== */
+        .screen-letter {
+            padding: 40px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff9f3 100%);
+            position: relative;
+            text-align: center;
+        }
+
+        /* Decorações flutuantes festivas de fundo */
+        .decor-emoji {
+            position: absolute;
+            font-size: 28px;
+            opacity: 0.2;
+            animation: float 4s ease-in-out infinite;
+        }
+        .d1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .d2 { top: 15%; right: 12%; animation-delay: 1s; }
+        .d3 { bottom: 15%; left: 15%; animation-delay: 2s; }
+        .d4 { bottom: 10%; right: 10%; animation-delay: 1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+
+        /* Caixa de texto alegre */
+        .letter-box {
+            width: 100%;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #4a3728;
+            font-weight: 500;
+            white-space: pre-wrap;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #fcdad7;
+        }
+
+        .typing-cursor::after {
+            content: '💖';
+            font-size: 18px;
+            margin-left: 3px;
+            animation: pulse 0.6s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+
+        /* ==========================================================================
+           4. TELA 3: POP-UP DA SURPRESA REVELADA
+           ========================================================================== */
+        .popup-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(74, 55, 40, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+        }
+
+        .popup-content {
+            background-color: #ffffff;
+            border-radius: 25px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: scale(0.7);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .popup-overlay.show .popup-content {
+            transform: scale(1);
+        }
+
+        .popup-icon {
+            font-size: 50px;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
+
+        .popup-title {
+            font-size: 22px;
+            color: #c94a4a;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .popup-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #555555;
+            margin-bottom: 20px;
+        }
+
+        /* Box com a foto do presente */
+        .gift-image-wrapper {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            aspect-ratio: 16 / 9;
+        }
+
+        .gift-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-close-popup {
+            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- TELA 1: O DISFARCE DO PERFUME -->
+        <section id="screen-perfume" class="screen-perfume">
+            <header class="shop-header">
+                <h1>L'Amour</h1>
+                <p>Haute Parfumerie &amp; Catálogo Exclusivo</p>
+            </header>
+
+            <main class="product-showcase">
+                <div class="product-image-wrapper">
+                    <img src="assets/perfume.jpg" alt="Perfume Importado" class="product-image" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=500&auto=format&fit=crop'">
+                </div>
+
+                <h2 class="product-title">Éclat Éternel Eau de Parfum</h2>
+                <p class="product-meta">Edição Especial de Lançamento | 100ml</p>
+                <p class="product-price">R$ 489,90</p>
+
+                <button type="button" class="btn-catalog" id="btn-ver-catalogo">Ver Catálogo</button>
+            </main>
+
+            <footer class="shop-footer">
+                <p>© 2026 L'Amour Parfumerie. Todos os direitos reservados.</p>
+            </footer>
+        </section>
+
+        <!-- TELA 2: A CARTA EMOTIVA E ALEGRE (ESTILO CANVA) -->
+        <section id="screen-letter" class="screen-letter hidden">
+            <!-- Elementos festivos flutuando no fundo -->
+            <div class="decor-emoji d1">🎉</div>
+            <div class="decor-emoji d2">✨</div>
+            <div class="decor-emoji d3">🎈</div>
+            <div class="decor-emoji d4">🌸</div>
+
+            <div id="text-container" class="letter-box typing-cursor"></div>
+        </section>
+
+        <!-- TELA 3: POP-UP DE REVELAÇÃO DO PRESENTE -->
+        <div id="popup-gift" class="popup-overlay hidden">
+            <div class="popup-content">
+                <div class="popup-icon"><i class="fa-solid fa-gift"></i></div>
+                <h3 class="popup-title">SURPRESA!!! 🥳✨</h3>
+                <p class="popup-text">
+                    Por isso, nós preparamos esse super presente com todo o nosso amor para aumentar ainda mais a sua autoestima e te ver sorrir:
+                </p>
+                
+                <div class="gift-image-wrapper">
+                    <!-- Lembrar de colocar a foto real na sua pasta assets depois: assets/sobrancelha.jpg -->
+                    <img src="assets/sobrancelha.jpg" alt="Spoiler Micropigmentação" class="gift-image" onerror="this.src='https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=500&auto=format&fit=crop'">
+                </div>
+
+                <p class="popup-text" style="font-weight: 700; color: #8c6239; font-size: 16px;">
+                    ✨ Você ganhou uma Micropigmentação de Sobrancelha! ✨
+                </p>
+
+                <button type="button" class="btn-close-popup" id="btn-fechar-popup">Amei! ❤️</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ÁUDIO DA SUA MÚSICA -->
+    <audio id="bg-music" src="assets/musica.mp3" preload="auto"></audio>
+
+    <!-- PROGRAMAÇÃO DO PROJETO -->
+    <script>
+        // Texto modificado para ficar muito mais alegre, dinâmico e cheio de energia!
+        const textToType = "PARABÉNS!!! 🎉✨\n\nVocê é uma mulher incrivelmente maravilhosa e super especial para todos nós! 💕\n\nHoje é o seu dia, e a nossa maior e melhor meta é ver esse sorriso lindo no seu rosto! 😊\n\nA gente sabe que essa data traz sentimentos guardados e que às vezes bate um aperto no peito... 🥺\n\nMas ó: viemos aqui para te lembrar, hoje e SEMPRE, que você NUNCA estará sozinha! 👩‍👧‍👧❤️\n\nA minha mãe e a vovó estão coladinhas e de mãos dadas com você, prontíssimas para o que der e vier! 💖💫";
+
+        const btnVerCatalogo = document.getElementById('btn-ver-catalog'); // Ajustado para bater com id do botão
+        const screenPerfume = document.getElementById('screen-perfume');
+        const screenLetter = document.getElementById('screen-letter');
+        const textContainer = document.getElementById('text-container');
+        const popupGift = document.getElementById('popup-gift');
+        const bgMusic = document.getElementById('bg-music');
+        const btnFecharPopup = document.getElementById('btn-fechar-popup');
+
+        // Correção de escuta do clique do botão inicial
+        document.getElementById('btn-ver-catalogo').addEventListener('click', function() {
+            screenPerfume.classList.add('hidden');
+            screenLetter.classList.remove('hidden');
+
+            // Play na música maravilhosa que você achou!
+            bgMusic.play().catch(e => console.log("Áudio aguardando interação."));
+
+            // Solta os primeiros confetes de comemoração na tela!
+            dispararConfetesFesta();
+
+            // Inicia o texto dinâmico
+            startTypingEffect();
+        });
+
+        function startTypingEffect() {
+            let index = 0;
+            textContainer.textContent = "";
+
+            const typingInterval = setInterval(() => {
+                if (index < textToType.length) {
+                    textContainer.textContent += textToType.charAt(index);
+                    index++;
+                    
+                    // De 25 em 25 letras, joga um confetezinho de leve enquanto digita para dar alegria
+                    if(index % 25 === 0) {
+                        confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
+                        confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
+                    }
+                } else {
+                    clearInterval(typingInterval);
+                    textContainer.classList.remove('typing-cursor');
+
+                    // Espera 1.5 segundos após terminar de digitar e joga o Pop-up na cara dela!
+                    setTimeout(() => {
+                        popupGift.classList.remove('hidden');
+                        setTimeout(() => popupGift.classList.add('show'), 50);
+                        
+                        // Chuva de confete MASSIVA de parabéns!
+                        dispararConfetesFesta();
+                    }, 1500);
+                }
+            }, 40); // Um pouquinho mais rápido para ser dinâmico
+        }
+
+        // Função para gerar uma explosão de confetes bem colorida estilo Canva
+        function dispararConfetesFesta() {
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        // Fecha o pop-up e solta mais um pouquinho de confete
+        btnFecharPopup.addEventListener('click', function() {
+            popupGift.classList.remove('show');
+            setTimeout(() => popupGift.classList.add('hidden'), 500);
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        });
+    </script>
+</body>
+</html>
